@@ -1,21 +1,19 @@
-# vue-mchatroom
+# Vue-chatroom
 
 > 基于vue node express mongodb的聊天室 
 
 ## Build Setup
 
 ``` bash
-# install dependencies
+# 安装
 npm install
 
-# serve with hot reload at localhost:8080
+# 运行前台服务  localhost:8080
 npm run dev
 
-# build for production with minification
-npm run build
+# 运行node服务  localhost:3000
+node server/server.js
 
-# build for production and view the bundle analyzer report
-npm run build --report
-```
+# 需要安装mongodb做数据库支持
 
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+# 目前支持注册登录
