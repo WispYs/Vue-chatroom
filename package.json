@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "mint-ui": "^2.2.9",
+    "mongoose": "^4.11.8",
     "socket.io": "^2.0.3",
     "vue": "^2.3.3",
     "vue-router": "^2.6.0"

@@ -11,7 +11,7 @@
 
 <script>
     export default {
-        data (){
+        data() {
             return {
                 footerIndex: 0,
                 footerList: [
@@ -32,6 +32,9 @@
                     },
                 ]
             }
+        },
+        created(){
+            this.footerIndex = localStorage.getItem("footerIndex");
         },
         components:{
 

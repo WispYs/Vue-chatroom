@@ -1,10 +1,10 @@
 
 @font-face {font-family: "iconfont";
-  src: url('iconfont.eot?t=1503562091688'); /* IE9*/
-  src: url('iconfont.eot?t=1503562091688#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('iconfont.woff?t=1503562091688') format('woff'), /* chrome, firefox */
-  url('iconfont.ttf?t=1503562091688') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
-  url('iconfont.svg?t=1503562091688#iconfont') format('svg'); /* iOS 4.1- */
+  src: url('iconfont.eot?t=1503653354640'); /* IE9*/
+  src: url('iconfont.eot?t=1503653354640#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('iconfont.woff?t=1503653354640') format('woff'), /* chrome, firefox */
+  url('iconfont.ttf?t=1503653354640') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('iconfont.svg?t=1503653354640#iconfont') format('svg'); /* iOS 4.1- */
 }
 
 .iconfont {
@@ -20,6 +20,12 @@
 .icon-people:before { content: "\e736"; }
 
 .icon-community:before { content: "\e741"; }
+
+.icon-gengduo:before { content: "\e600"; }
+
+.icon-addition:before { content: "\e6e0"; }
+
+.icon-emoji:before { content: "\e6f6"; }
 
 .icon-lock:before { content: "\e709"; }
 

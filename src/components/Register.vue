@@ -6,7 +6,7 @@
         </div>
         <div class="login-input">
             <i class="iconfont icon-lock"></i>
-            <input type="text" id="password" placeholder="请输入秘籍" v-model="password"/>  
+            <input type="password" id="password" placeholder="请输入秘籍" v-model="password"/>  
         </div>
         <mt-button type="default" class="login-btn" @click="submitUserInfo">注册</mt-button>
         <p @click="signUp">贫僧有法号！</p>
