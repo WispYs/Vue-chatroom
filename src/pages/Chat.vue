@@ -1,6 +1,6 @@
 <template>
     <div class="chat">
-        <List v-for="item in chatList" :logo="item.logo" :title="item.title" :message="item.message" :router="item.router" :id="item.roomid"></List>
+        <List v-for="(item, index) in chatList" :key="index" :logo="item.logo" :title="item.title" :message="item.message" :router="item.router" :id="item.roomid"></List>
     </div>
 </template>
 
@@ -18,7 +18,7 @@
                         roomid: '1'
                     },
                     {
-                        logo: 'static/miku.jpg',
+                        logo: 'http://oodni3sgx.bkt.clouddn.com/miku.jpg',
                         title: '动漫天地',
                         message: '鲁路修：All Hail Lelouch!',
                         router: '/Chatroom',

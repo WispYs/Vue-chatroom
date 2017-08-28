@@ -1,0 +1,2 @@
+export const SAVE_USERINFO = 'SAVE_USERINFO'
+export const GET_USERINFO = 'GET_USERINFO'

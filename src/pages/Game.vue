@@ -1,6 +1,6 @@
 <template>
     <div class="game">
-        <List v-for="item in gameList" :logo="item.logo" :title="item.title" :message="item.message" :router="item.router" :id="item.gameid"></List>
+        <List v-for="(item, index) in gameList" :key="index" :logo="item.logo" :title="item.title" :message="item.message" :router="item.router" :id="item.gameid"></List>
     </div>
 </template>
 

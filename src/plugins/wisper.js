@@ -207,6 +207,10 @@
                 })  
                 return arr;  
             },
+            //验证非空
+            trim: function(str){
+                return str.replace(/(^\s*)|(\s*$)/g, '');
+            },
             //实现金钱格式化
             formatCash : function(str){
                 var format = str.replace(/\B(?=(\d{3})+(?!\d))/g, ',');

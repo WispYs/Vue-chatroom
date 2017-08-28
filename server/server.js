@@ -243,7 +243,7 @@ io.on('connection', function (socket){
                 if(res.length > 0){
                     if(data.password != res[0].password){
                         socket.emit('loginState', {
-                            loginState: 2,  //0 默认；1 没有账号；2 密码错误；3 登陆成功
+                            loginState: 2,  //0 默认；1 没有账号；2 密码错误；3 登陆成功；4 未登陆
                         })
                     }else if(data.password == res[0].password){
                         socket.emit('loginState', {

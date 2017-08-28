@@ -16,6 +16,7 @@
 <script>
 import { Toast } from 'mint-ui';
 import io from 'socket.io-client';
+import {  mapMutations } from 'vuex'
 export default {
     data() {
         return {
@@ -58,6 +59,9 @@ export default {
 
     },
     methods: {
+        ...mapMutations([
+            'SAVE_USERINFO',
+        ]),
         httpServer() {
             let _this = this;
             this.socket = io.connect('http://localhost:3000');
@@ -95,6 +99,7 @@ export default {
                 }
                 //服务端发送注册请求
                 this.socket.emit('register user', userInfo);
+                this.SAVE_USERINFO(userInfo)
             }
         },
         getAvator () {

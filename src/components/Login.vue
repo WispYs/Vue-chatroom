@@ -22,7 +22,7 @@ export default {
         return{
             username: '',
             password: '',
-            loginState: 0   //0 默认；1 没有账号；2 密码错误；3 登陆成功
+            loginState: 0   //0 默认；1 没有账号；2 密码错误；3 登陆成功；4 未登陆
         }
     },
     mounted() {
