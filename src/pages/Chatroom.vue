@@ -4,6 +4,7 @@
             <div class="chat-list" ref="chatlist">
                 <p class="chat-tip">欢迎来到本聊天室！</p>
                 <p class="chat-tip">房间有{{onlineCount}}人在线</p>
+                <p>{{userInfo.username}}</p>
             </div>
         </div>
         <div class="chat-form">
@@ -19,25 +20,35 @@
 </template>
 
 <script>
+
     import Vue from 'vue';
     import io from 'socket.io-client';
+    import {  mapState, mapMutations } from 'vuex';
+    import { Toast } from 'mint-ui';
     export default {
         data() {
             return {
                 title: '',
-                loginState: 0,  //0 默认；1 没有账号；2 密码错误；3 登陆成功；4 未登陆
                 onlineCount: 0,
                 onlineUserList: [],
                 messageList: [],
                 sendMessage: '',
+                userInfo: {},
+                loginState: 0   //0 默认；1 没有账号；2 密码错误；3 登陆成功；4 未登陆
             }
         },
         created() {
             let _this = this;
-            this.$root.$once("title", this.changeTitle)
+         },
+        computed: {
+            ...mapState([
+                
+            ]),
         },
         mounted() {
             this.httpServer();
+            this.loginState = JSON.parse(localStorage.getItem("loginState"));
+            this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
         },
         watch: {
             loginState: function(val){
@@ -45,7 +56,7 @@
                 if(val !== 3){
                     Toast('您还未登录，请重新登录');
                     setTimeout(function(){
-                        _this.$router.push('/Index');
+                        _this.$router.push('/');
                     }, 1500)
                 }
             }
@@ -54,12 +65,16 @@
             
         },
         methods: {
+            ...mapMutations([
+                'SAVE_USERINFO',
+                'LOGIN_STATE'
+            ]),
             httpServer () {
                 let _this = this;
                 this.socket = io.connect('http://localhost:3000');
-                this.socket.on('loginState', function(data){
-                    _this.loginState = data.loginState; //0 默认；1 没有账号；2 密码错误；3 登陆成功
-                });
+                // this.socket.on('loginState', function(data){
+                //     _this.loginState = data.loginState; //0 默认；1 没有账号；2 密码错误；3 登陆成功
+                // });
             },
             changeTitle(title) {
                 console.log(title);
@@ -78,8 +93,8 @@
                 this.sendMessage = Wisper.trim(this.sendMessage);
                 if(this.sendMessage > 0){
                     let messageInfo = {
-                        type: 1,
-                        username: username,
+                        type: 1,    //1: 本人信息   2：其他人信息   3：提示信息
+                        username: userInfo.username,
                         message: this.sendMessage,
                         
                         

@@ -17,6 +17,7 @@
 import { Toast } from 'mint-ui';
 import { Indicator } from 'mint-ui';
 import io from 'socket.io-client';
+import { mapMutations } from 'vuex'
 export default {
     data() {
         return{
@@ -27,6 +28,7 @@ export default {
     },
     mounted() {
         this.httpServer();
+        this.LOGIN_STATE(this.loginState);
     },
     watch: {
         loginState: function(val){
@@ -39,14 +41,24 @@ export default {
                 this.$refs.passwordInput.focus();
             }else if(val == 3){
                 Indicator.open('加载中...');
+                let userInfo = {
+                    username: this.username,
+                    password: this.password,
+                }
+                this.SAVE_USERINFO(userInfo);
                 setTimeout(function(){
                     Indicator.close();
                     _this.$router.push('/Index');
                 }, 1500)
             }
+            this.LOGIN_STATE(this.loginState);
         }
     },
     methods: {
+        ...mapMutations([
+            'SAVE_USERINFO',
+            'LOGIN_STATE'
+        ]),
         httpServer () {
             let _this = this;
             this.socket = io.connect('http://localhost:3000');
