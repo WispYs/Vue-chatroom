@@ -2,8 +2,6 @@
     <div class="chat-room">
         <div class="chat-con">
             <div class="chat-list" ref="chatlist">
-                <p class="chat-tip">欢迎来到本聊天室！</p>
-                <p class="chat-tip">房间有{{onlineCount}}人在线</p>
                 <div v-for="item in messageList">
                     <div class="chat-self" v-if="item.type === 1">
                         <img :src="item.useravator" alt="">
@@ -63,6 +61,7 @@
             this.httpServer();
             this.loginState = JSON.parse(localStorage.getItem("loginState"));
             this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
+            this.socket.emit('join room', {userInfo: this.userInfo, roomId: this.$route.query.id})
         },
         watch: {
             loginState: function(val){
@@ -87,7 +86,15 @@
                 let _this = this;
                 this.socket = io.connect('http://localhost:3000');
                 
-                this.socket.on('sendMsg', function (data){
+                this.socket.on('sendMsg broadcast', function (data){
+                    _this.messageList.push(data)
+                })
+
+                this.socket.on('join room broadcast', function (data){
+                    _this.messageList.push(data)
+                })
+
+                this.socket.on('room usercount', function (data){
                     _this.messageList.push(data)
                 })
             },
@@ -115,11 +122,8 @@
                     }
                     this.socket.emit('sendMsg', messageInfo)
                     this.messageList.push(messageInfo)
+                    this.sendMessage = '';
                 }
-                // var joinTip = document.createElement('p');
-                // joinTip.innerText = 'Hello World'
-                // this.$refs.chatlist.appendChild(joinTip)
-                
             }
 
         }

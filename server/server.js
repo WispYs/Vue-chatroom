@@ -21,6 +21,9 @@ var onlineCount = 0;
 //在线玩家
 var onlineUser = [];
 
+//房间列表
+var roomInfo = {};
+
 var mongoose = require("../mongod/mongoose.js")
 
 io.on('connection', function (socket){
@@ -123,6 +126,7 @@ io.on('connection', function (socket){
         // }
         
     })
+    //登录
     socket.on('login', function (data){
         mongoose.findPassword(data.username, function(err, res){
 
@@ -171,11 +175,36 @@ io.on('connection', function (socket){
         })
 
     })
+    //进入房间
+    socket.on('join room', function (data){
+        var roomId = data.roomId;
+        //房间人数
+        var roomUserCount;
+        var username = data.userInfo.username;
+        console.log(roomId, username)
+
+        if (!roomInfo[roomId]) {
+            roomInfo[roomId] = [];
+        }
+
+        
+        
+        // 加入房间
+        socket.join(roomId);    
+
+        roomInfo[roomId].push(username);
+        roomUserCount = roomInfo[roomId].length;
+        console.log(roomInfo[roomId])
+        // 通知此房间内的所有人员
+        io.to(roomId).emit('join room broadcast', {type: 3, tip: username + '加入了房间'}, roomInfo[roomId]);  
+        console.log(username + '加入了房间' + roomId);
+
+        socket.emit('room usercount', {type: 3, tip: '当前房间共有' + roomUserCount + '人'});
+        console.log('房间' + roomId + '总共有' + roomUserCount + '人');
+    })
     //用户发送信息
     socket.on('sendMsg', function (data){
-        var url = socket.request.headers.referer;
-                console.log(url)
-        socket.broadcast.emit('sendMsg', {
+        socket.broadcast.emit('sendMsg broadcast', {
             type: 2,    //1: 本人信息   2：其他人信息   3：提示信息
             username: data.username,
             message: data.message,
