@@ -4,7 +4,21 @@
             <div class="chat-list" ref="chatlist">
                 <p class="chat-tip">欢迎来到本聊天室！</p>
                 <p class="chat-tip">房间有{{onlineCount}}人在线</p>
-                <p>{{userInfo.username}}</p>
+                <div v-for="item in messageList">
+                    <div class="chat-self" v-if="item.type === 1">
+                        <img :src="item.useravator" alt="">
+                        <span class="chat-s-name">{{item.username}}</span>
+                        <span class="chat-s-msg">{{item.message}}</span>
+                    </div>
+                    <div class="chat-other" v-if="item.type === 2">
+                        <img :src="item.useravator" alt="">
+                        <span class="chat-o-name">{{item.username}}</span>
+                        <span class="chat-o-msg">{{item.message}}</span>
+                    </div>
+                    <p class="chat-tip" v-if="item.type === 3">{{item.tip}}</p>
+                </div>
+                
+                
             </div>
         </div>
         <div class="chat-form">
@@ -72,9 +86,10 @@
             httpServer () {
                 let _this = this;
                 this.socket = io.connect('http://localhost:3000');
-                // this.socket.on('loginState', function(data){
-                //     _this.loginState = data.loginState; //0 默认；1 没有账号；2 密码错误；3 登陆成功
-                // });
+                
+                this.socket.on('sendMsg', function (data){
+                    _this.messageList.push(data)
+                })
             },
             changeTitle(title) {
                 console.log(title);
@@ -91,16 +106,15 @@
             },
             sendMsg() {
                 this.sendMessage = Wisper.trim(this.sendMessage);
-                if(this.sendMessage > 0){
+                if(this.sendMessage.length > 0){
                     let messageInfo = {
                         type: 1,    //1: 本人信息   2：其他人信息   3：提示信息
-                        username: userInfo.username,
+                        username: this.userInfo.username,
                         message: this.sendMessage,
-                        
-                        
+                        useravator: this.userInfo.avator
                     }
                     this.socket.emit('sendMsg', messageInfo)
-
+                    this.messageList.push(messageInfo)
                 }
                 // var joinTip = document.createElement('p');
                 // joinTip.innerText = 'Hello World'
@@ -127,7 +141,99 @@
                     text-align: center;
                     margin:5px 0;
                 }
-
+                .chat-self{
+                    position: relative;
+                    margin: 15px 0;
+                    overflow: hidden;
+                    img{
+                        float:right;
+                        width: 40px;
+                        height: 40px;
+                        border-radius: 50%;
+                        overflow: hidden;
+                    }
+                    .chat-s-name{
+                        position: absolute;
+                        right: 50px;
+                        top: 0px;
+                        font-size: 12px;
+                        color: #999;
+                    }
+                    .chat-s-msg{
+                        float:right;
+                        margin-right: 10px;
+                        line-height: 23px;
+                        color: white;
+                        background: #3398dc;
+                        padding: 10px;
+                        font-size: 14px;
+                        border-radius: 10px;
+                        margin-top: 24px;
+                        min-width: 50px;
+                        font-style: normal;
+                        max-width: 68%;
+                        word-break: break-all;
+                        position: relative;
+                    }
+                    .chat-s-msg:after {
+                        content: "";
+                        position: absolute;
+                        right: -5px;
+                        top: 4px;
+                        width: 0;
+                        height: 0;
+                        border-top: 0px solid transparent;
+                        border-left: 8px solid #3398dc;
+                        border-bottom: 16px solid transparent;
+                    }
+                }
+                .chat-other{
+                    position: relative;
+                    margin: 15px 0;
+                    overflow: hidden;
+                    img{
+                        float:left;
+                        width: 40px;
+                        height: 40px;
+                        border-radius: 50%;
+                        overflow: hidden;
+                    }
+                    .chat-o-name{
+                        position: absolute;
+                        left: 50px;
+                        top: 0px;
+                        font-size: 12px;
+                        color: #999;
+                    }
+                    .chat-o-msg{
+                        float:left;
+                        margin-left: 10px;
+                        line-height: 23px;
+                        color: white;
+                        background: #3398dc;
+                        padding: 10px;
+                        font-size: 14px;
+                        border-radius: 10px;
+                        margin-top: 24px;
+                        min-width: 50px;
+                        text-align: center;
+                        font-style: normal;
+                        max-width: 68%;
+                        word-break: break-all;
+                        position: relative;
+                    }
+                    .chat-o-msg:after {
+                        content: "";
+                        position: absolute;
+                        left: -5px;
+                        top: 4px;
+                        width: 0;
+                        height: 0;
+                        border-top: 0px solid transparent;
+                        border-right: 8px solid #3398dc;
+                        border-bottom: 16px solid transparent;
+                    }
+                }
             }
         }
         .chat-form{

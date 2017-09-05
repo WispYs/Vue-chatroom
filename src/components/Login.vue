@@ -23,7 +23,8 @@ export default {
         return{
             username: '',
             password: '',
-            loginState: 0   //0 默认；1 没有账号；2 密码错误；3 登陆成功；4 未登陆
+            connectState: true,  //数据库连接状态
+            loginState: 0   //0 默认；1 没有账号；2 密码错误；3 登陆成功；4 未登陆;  5 重复登陆
         }
     },
     mounted() {
@@ -40,19 +41,23 @@ export default {
                 Toast('密码错误，请重新输入');
                 this.$refs.passwordInput.focus();
             }else if(val == 3){
+                this.socket.emit('getUserInfo', this.username);
                 Indicator.open('加载中...');
-                let userInfo = {
-                    username: this.username,
-                    password: this.password,
-                }
-                this.SAVE_USERINFO(userInfo);
                 setTimeout(function(){
                     Indicator.close();
                     _this.$router.push('/Index');
                 }, 1500)
+            }else if(val == 5){
+                Toast('您已登录，请勿重复登录');
+                this.$refs.usernameInput.focus();
             }
             this.LOGIN_STATE(this.loginState);
-        }
+        },
+        connectState: function(val){
+            if(!val){
+                Toast('数据库异常！');
+            }
+        },
     },
     methods: {
         ...mapMutations([
@@ -62,9 +67,18 @@ export default {
         httpServer () {
             let _this = this;
             this.socket = io.connect('http://localhost:3000');
-            this.socket.on('loginState', function(data){
-                _this.loginState = data.loginState; //0 默认；1 没有账号；2 密码错误；3 登陆成功
+            this.socket.on('loginState', function (data){
+                _this.loginState = data.loginState; //0 默认；1 没有账号；2 密码错误；3 登陆成功；4 未登陆;  5 重复登陆
             });
+            //数据库连接状态
+            this.socket.on('connectState', function (data){
+                _this.connectState = data.connectState;
+
+            });
+            //存储用户信息
+            this.socket.on('saveUserInfo', function (data){
+                _this.SAVE_USERINFO(data);
+            })
         },
         signUp() {
             this.$emit('have-account',false);

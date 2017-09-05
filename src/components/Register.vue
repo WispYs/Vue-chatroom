@@ -28,7 +28,7 @@ export default {
             connectState: true,  //数据库连接状态
             validUsername: true,  //用户名验证
             creatState: false,  //注册用户状态
-            loginState: 0   //0 默认；1 没有账号；2 密码错误；3 登陆成功；4 未登陆
+            loginState: 0   //0 默认；1 没有账号；2 密码错误；3 登陆成功；4 未登陆；5 重复登陆
         }
     },
     mounted() {
@@ -53,11 +53,7 @@ export default {
             let _this = this;
             if(val){
                 Toast('恭喜您，注册成功！');
-                let userInfo = {
-                    username: this.username,
-                    password: this.password,
-                }
-                this.SAVE_USERINFO(userInfo);
+                this.socket.emit('getUserInfo', this.username);
                 this.loginState = 3;
                 this.LOGIN_STATE(this.loginState);
                 setTimeout(function(){
@@ -92,6 +88,10 @@ export default {
             this.socket.on('creatUserInfo', function(data){
                 _this.creatState = data.creatState;
             });
+            //存储用户信息
+            this.socket.on('saveUserInfo', function (data){
+                _this.SAVE_USERINFO(data);
+            })
         },
         signUp() {
             this.$emit('have-account',true);
