@@ -187,8 +187,6 @@ io.on('connection', function (socket){
             roomInfo[roomId] = [];
         }
 
-        
-        
         // 加入房间
         socket.join(roomId);    
 
@@ -196,22 +194,24 @@ io.on('connection', function (socket){
         roomUserCount = roomInfo[roomId].length;
         console.log(roomInfo[roomId])
         // 通知此房间内的所有人员
-        io.to(roomId).emit('join room broadcast', {type: 3, tip: username + '加入了房间'}, roomInfo[roomId]);  
+        socket.broadcast.to(roomId).emit('join room broadcast', {type: 3, tip: username + '加入了房间'});  
         console.log(username + '加入了房间' + roomId);
 
         socket.emit('room usercount', {type: 3, tip: '当前房间共有' + roomUserCount + '人'});
         console.log('房间' + roomId + '总共有' + roomUserCount + '人');
-    })
-    //用户发送信息
-    socket.on('sendMsg', function (data){
-        socket.broadcast.emit('sendMsg broadcast', {
-            type: 2,    //1: 本人信息   2：其他人信息   3：提示信息
-            username: data.username,
-            message: data.message,
-            useravator: data.useravator
+
+        //用户发送信息
+        socket.on('sendMsg', function (data){
+            socket.broadcast.to(roomId).emit('sendMsg broadcast', {
+                type: 2,    //1: 本人信息   2：其他人信息   3：提示信息
+                username: data.username,
+                message: data.message,
+                useravator: data.useravator
+            });
+            console.log(data.username + ':'  + data.message);
         });
-        console.log(data.username + ':'  + data.message);
-    });
+    })
+    
     //存储用户信息
     socket.on('getUserInfo', function (username){
         mongoose.findData(username, function(err, res){
