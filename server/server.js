@@ -179,7 +179,7 @@ io.on('connection', function (socket){
             type: 2,    //1: 本人信息   2：其他人信息   3：提示信息
             username: data.username,
             message: data.message,
-            useravator: data.avator
+            useravator: data.useravator
         });
         console.log(data.username + ':'  + data.message);
     });
