@@ -22,7 +22,7 @@
                 }else if(this.$route.name == 'person'){
                     footerIndex =2;
                 }
-                localStorage.setItem("footerIndex", footerIndex)
+                sessionStorage.setItem("footerIndex", footerIndex)
             }
         },
     }

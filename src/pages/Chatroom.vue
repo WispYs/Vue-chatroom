@@ -60,8 +60,8 @@
         },
         mounted() {
             this.httpServer();
-            this.loginState = JSON.parse(localStorage.getItem("loginState"));
-            this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
+            this.loginState = JSON.parse(sessionStorage.getItem("loginState"));
+            this.userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
             this.roomId = this.$route.query.id;
             this.socket.emit('join room', {userInfo: this.userInfo, roomId: this.roomId})
         },
@@ -96,9 +96,9 @@
                     _this.messageList.push(data)
                 })
 
-                this.socket.on('room usercount', function (data){
-                    _this.messageList.push(data)
-                })
+                // this.socket.on('room usercount', function (data){
+                //     _this.messageList.push(data)
+                // })
             },
             changeTitle(title) {
                 console.log(title);

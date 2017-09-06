@@ -2,16 +2,16 @@
     <div class="person">
         <div class="user-con">
             <div class="user-info">
-                <img class="user-avator" :src="userInfo.useravator" />
+                <img class="user-avator" :src="userInfo.avator" />
                 <p class="user-name">{{userInfo.username}}</p>
-                <p class="user-point">积分：{{userInfo.userpoint}}</p>
+                <p class="user-point">积分：{{userInfo.userpoint ? userInfo.userpoint : 0}}</p>
             </div>
         </div>
         <div class="person-con">
             <ul>
                 <li>
                     <i class="iconfont icon-mail"></i>
-                    <span>我的好友</span>
+                    <span>我的房间</span>
                     <i class="iconfont icon-gengduo"></i>
                 </li>
                 <li>
@@ -33,15 +33,14 @@
     export default {
         data (){
             return {
-                userInfo: {
-                    username: "Wisper",
-                    useravator: "static/miku.jpg",
-                    userpoint: 30
-                }
+                userInfo: {}
             }
         },
         components:{
 
+        },
+        mounted() {
+            this.userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
         },
         methods: {
         }

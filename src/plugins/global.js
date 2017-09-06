@@ -3,15 +3,15 @@
     var define_Global = function(){
         var Global = {
             avatorArr: [
-                "../img/Aether.jpg",
-                "../img/Alone.jpg",
-                "../img/Eventide.jpg",
-                "../img/Frozen Leaves.jpg",
-                "../img/Illuminate.jpg",
-                "../img/Illuminate2.jpg",
-                "../img/Paradisus-Paradoxum.jpg",
-                "../img/Petal.jpg",
-                "../img/Vibrance.jpg"
+                "http://oodni3sgx.bkt.clouddn.com/Illuminate.jpg",
+                "http://oodni3sgx.bkt.clouddn.com/Alone.jpg",
+                "http://oodni3sgx.bkt.clouddn.com/Paradisus-Paradoxum.jpg",
+                "http://oodni3sgx.bkt.clouddn.com/Eventide.jpg",
+                "http://oodni3sgx.bkt.clouddn.com/Aether.jpg",
+                "http://oodni3sgx.bkt.clouddn.com/Illuminate2.jpg",
+                "http://oodni3sgx.bkt.clouddn.com/Petal.jpg",
+                "http://oodni3sgx.bkt.clouddn.com/Frozen%20Leaves.jpg",
+                "http://oodni3sgx.bkt.clouddn.com/miku.jpg"
                 ] 
         }
         return Global;

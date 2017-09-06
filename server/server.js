@@ -28,10 +28,7 @@ var mongoose = require("../mongod/mongoose.js")
 
 io.on('connection', function (socket){
     //当前用户信息
-    var currentUserId = '';
     var currentUsername = '';
-    var userPassword = '';
-    var joinDate = '';
     //新用户注册
     socket.on('register user', function (data){
         
@@ -74,11 +71,8 @@ io.on('connection', function (socket){
                                 creatState: true,
                             });
                             //记录当前玩家名字id
-                            currentUserId = userData.userid;
                             currentUsername = userData.username;
-                            userPassword = userData.password;
-                            joinDate = userData.joindate;
-                            console.log("新用户加入\nusername : "+currentUsername+"\npassword : "+userPassword+"\njoindata : "+joinDate+"\nuserid : "+currentUserId+"");
+                            console.log("新用户加入\nusername : "+currentUsername);
                             onlineCount++;
                             onlineUser.push(userData.username)
                             console.log(onlineUser,onlineCount)
@@ -88,45 +82,8 @@ io.on('connection', function (socket){
                 
             }
         });
-        
-        //findData(currentUsername);
-        //upData(currentUsername,userPassword);
-        // if(getUserPassword && getUserPassword == userPassword){
-        //     console.log('登录密码正确')
-        //     //检查在线列表，如果不在里面就加入
-        //     if(!onlineUser.hasOwnProperty(currentUserId)) {
-        //         onlineUser[currentUserId] = currentUsername;
-        //         onlineCount++;
-        //     }
-        //     console.log(onlineUser)
-        //     //向客户端返回登录情况
-        //     socket.emit('loginState', {
-        //         loginState: true
-        //     });
-
-        //     //向客户端返回人数
-        //     socket.emit('login', {
-        //         onlineCount: onlineCount,
-        //         onlineUser: onlineUser
-        //     });
-
-        //     //发送信息给所有连接到server的客户端
-        //     socket.broadcast.emit('user joined', {
-        //         username: currentUsername,
-        //         onlineCount: onlineCount,
-        //         onlineUser: onlineUser
-        //     });
-
-        // }else{
-        //     console.log('登录密码错误')
-        //     //向客户端返回登录情况
-        //     socket.emit('loginState', {
-        //         loginState: false
-        //     });
-        // }
-        
     })
-    //登录
+    //用户登录
     socket.on('login', function (data){
         mongoose.findPassword(data.username, function(err, res){
 
@@ -148,12 +105,9 @@ io.on('connection', function (socket){
                             socket.emit('loginState', {
                                 loginState: 3,  
                             })
-                            //记录当前玩家名字id
-                            currentUserId = data.userid;
+
                             currentUsername = data.username;
-                            userPassword = data.password;
-                            joinDate = data.joindate;
-                            console.log("新用户加入\nusername : "+currentUsername+"\npassword : "+userPassword+"\njoindata : "+joinDate+"\nuserid : "+currentUserId+"");
+                            console.log("新用户加入\nusername : "+currentUsername);
                             onlineCount++;
                             onlineUser.push(data.username)
                         }else if(onlineUser.indexOf(data.username) > -1){
@@ -173,13 +127,12 @@ io.on('connection', function (socket){
             }
 
         })
-
     })
     //进入房间
     socket.on('join room', function (data){
         var roomId = data.roomId;
         //房间人数
-        var roomUserCount;
+        // var roomUserCount;   暂时不统计房间人数
         var username = data.userInfo.username;
         console.log(roomId, username)
 
@@ -191,14 +144,14 @@ io.on('connection', function (socket){
         socket.join(roomId);    
 
         roomInfo[roomId].push(username);
-        roomUserCount = roomInfo[roomId].length;
+        //roomUserCount = roomInfo[roomId].length;
         console.log(roomInfo[roomId])
         // 通知此房间内的所有人员
         socket.broadcast.to(roomId).emit('join room broadcast', {type: 3, tip: username + '加入了房间'});  
         console.log(username + '加入了房间' + roomId);
 
-        socket.emit('room usercount', {type: 3, tip: '当前房间共有' + roomUserCount + '人'});
-        console.log('房间' + roomId + '总共有' + roomUserCount + '人');
+        //socket.emit('room usercount', {type: 3, tip: '当前房间共有' + roomUserCount + '人'});
+        //console.log('房间' + roomId + '总共有' + roomUserCount + '人');
 
         //用户发送信息
         socket.on('sendMsg', function (data){
@@ -211,7 +164,6 @@ io.on('connection', function (socket){
             console.log(data.username + ':'  + data.message);
         });
     })
-    
     //存储用户信息
     socket.on('getUserInfo', function (username){
         mongoose.findData(username, function(err, res){
@@ -236,7 +188,6 @@ io.on('connection', function (socket){
                 }
             }
         })
-
     })
     //用户退出链接
     socket.on('disconnect', function (){

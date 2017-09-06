@@ -115,7 +115,9 @@ export default {
             }
         },
         getAvator () {
-            return Global.avatorArr[Math.floor(Math.random()*Global.avatorArr.length)];
+            //设置图片缩略参数
+            var fops = '?imageView2/1/w/200/h/200/format/jpg/q/75%7Cimageslim'
+            return Global.avatorArr[Math.floor(Math.random()*Global.avatorArr.length)] + fops;
         }
 
     }

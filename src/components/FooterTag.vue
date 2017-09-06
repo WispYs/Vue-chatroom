@@ -34,7 +34,7 @@
             }
         },
         created(){
-            this.footerIndex = localStorage.getItem("footerIndex");
+            this.footerIndex = sessionStorage.getItem("footerIndex");
         },
         components:{
 
