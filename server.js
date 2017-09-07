@@ -7,8 +7,8 @@ http.listen(3000, function(){
     console.log('listening on *:3000');
 });
 
-//路由，链接到client，访问时直接访问到index.html
-app.use(express.static(__dirname + '/client'));
+//路由，链接到dist，访问时直接访问到index.html
+app.use(express.static(__dirname + '/dist'));
 
 /*app.get('/', function (req, res){
     res.sendFile(__dirname + '/index.html');
@@ -24,7 +24,7 @@ var onlineUser = [];
 //房间列表
 var roomInfo = {};
 
-var mongoose = require("../mongod/mongoose.js")
+var mongoose = require("./mongod/mongoose.js")
 
 io.on('connection', function (socket){
     //当前用户信息

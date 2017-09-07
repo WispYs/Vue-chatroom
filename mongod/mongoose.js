@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var db = mongoose.connect('mongodb://localhost:27017/chatroom');
+var db = mongoose.connect('mongodb://59.110.218.21:27017/chatroom');
 
 db.connection.on('error', function(error){
   console.log('数据库连接失败：' + error);
