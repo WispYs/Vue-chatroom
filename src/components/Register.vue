@@ -2,14 +2,14 @@
     <div class="register">
         <div class="login-input">
             <i class="iconfont icon-people"></i>
-            <input type="text" id="username" placeholder="请输入法号" v-model="username"/>  
+            <input type="text" id="username" placeholder="请输入用户名" v-model="username"/>  
         </div>
         <div class="login-input">
             <i class="iconfont icon-lock"></i>
-            <input type="password" id="password" placeholder="请输入秘籍" v-model="password"/>  
+            <input type="password" id="password" placeholder="请输入密码" v-model="password"/>  
         </div>
         <mt-button type="default" class="login-btn" @click="submitUserInfo">注册</mt-button>
-        <p @click="signUp">贫僧有法号！</p>
+        <p @click="signUp">已经有账号了！</p>
     </div>
 </template>
 
@@ -73,7 +73,7 @@ export default {
         ]),
         httpServer() {
             let _this = this;
-            this.socket = io.connect('http://localhost:3000');
+            this.socket = io.connect('http://'+Global.ClientServerIP+':3000');
             //数据库连接状态
             this.socket.on('connectState', function(data){
                 _this.connectState = data.connectState;
@@ -97,8 +97,8 @@ export default {
             this.$emit('have-account',true);
         },
         submitUserInfo() {
-            if(this.username.length > 10 || this.username.length < 3){
-                Toast('用户名长度必须在3~10位之间');
+            if(this.username.length > 10 || this.username.length < 1){
+                Toast('用户名长度必须在1~10位之间');
             }else if(!Wisper.checkPassword(this.password)){
                 Toast('密码只能输入6-20个字母、数字、下划线 ');
             }else{

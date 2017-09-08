@@ -2,6 +2,7 @@
     'use strict';
     var define_Global = function(){
         var Global = {
+            ClientServerIP: '59.110.218.21',
             avatorArr: [
                 "http://oodni3sgx.bkt.clouddn.com/Illuminate.jpg",
                 "http://oodni3sgx.bkt.clouddn.com/Alone.jpg",

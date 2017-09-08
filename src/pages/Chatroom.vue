@@ -1,6 +1,6 @@
 <template>
     <div class="chat-room">
-        <div class="chat-con">
+        <div class="chat-con" ref="chatContent">
             <div class="chat-list" ref="chatlist">
                 <div v-for="item in messageList">
                     <div class="chat-self" v-if="item.type === 1">
@@ -65,6 +65,9 @@
             this.roomId = this.$route.query.id;
             this.socket.emit('join room', {userInfo: this.userInfo, roomId: this.roomId})
         },
+        updated () {
+            this.scroll();
+        },
         watch: {
             loginState: function(val){
                 let _this = this;
@@ -86,7 +89,7 @@
             ]),
             httpServer () {
                 let _this = this;
-                this.socket = io.connect('http://localhost:3000');
+                this.socket = io.connect('http://'+Global.ClientServerIP+':3000');
                 
                 this.socket.on('sendMsg broadcast', function (data){
                     _this.messageList.push(data)
@@ -101,7 +104,6 @@
                 // })
             },
             changeTitle(title) {
-                console.log(title);
                 document.title = title;
                 let i = document.createElement('iframe');
                 i.src = '//m.baidu.com/favicon.ico';
@@ -126,8 +128,10 @@
                     this.messageList.push(messageInfo)
                     this.sendMessage = '';
                 }
+            },
+            scroll () {
+                this.$refs.chatContent.scrollTop = this.$refs.chatContent.scrollHeight;
             }
-
         }
     }
 </script>
@@ -271,7 +275,7 @@
             .form-btn{
                 float:left;
                 font-size:14px;
-                padding:4px 8px;
+                padding:4px 10px;
                 color:white;
                 border-radius:4px;
                 background:#2b3953;

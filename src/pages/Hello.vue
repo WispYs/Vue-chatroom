@@ -44,11 +44,12 @@
 <style lang="scss">
     .hello{
         height:100%;
+        overflow:hidden;
         background:#2b3953;
         font-family: "Governor"!important;
         color:#999;
         .logo{
-            padding-top:55%;
+            padding-top:35%;
             margin:0 auto;
             text-align:center;
             font-size:20px;
@@ -92,6 +93,7 @@
                 background:#379386;
                 color: #f2f2f2;
                 border:0;
+                box-shadow: none;
             }
             p{
                 text-align:center;
